@@ -50,6 +50,18 @@
     button:hover {
       background-color: #0056b3;
     }
+
+    .login-container a {
+      display: block;
+      text-decoration: none;
+      background-color: #0056b3;
+      margin-top: 50px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      color: white;
+      padding: 10px;
+    }
   </style>
 </head>
 
@@ -61,29 +73,41 @@
       <input type="password" id="passwordInput" placeholder="Password" required />
       <button type="button" id="loginButton">Log In</button>
     </form>
+    <a href="./register.html">sign up</a>
   </div>
 
   <script>
     document.getElementById("loginButton").addEventListener("click", () => {
-      let userName = document.getElementById("usernameInput").value;
-      let pwd = document.getElementById("passwordInput").value;
-      let usersArr = JSON.parse(localStorage.getItem("users"));
-      let parsedArr = usersArr.map(item => JSON.parse(item));
-      for (let item of parsedArr) {
-        console.log("item is:" + item.userName + " pwd:" + item.pwd);
-        if (item.userName == userName && item.pwd == pwd) {
-          console.log("user was found");
-          item.lastLogged = new Date();
-          let storageArr = parsedArr.map(item => JSON.stringify(item));
-          localStorage.setItem("users", JSON.stringify(storageArr));
-          localStorage.setItem("currentUser", JSON.stringify(userName));
-          if (item.isAdmin == false) { window.location.href = "./index.html"; }
-          else { window.location.href = "./adminCrm.html"; }
+      try {
+        let userName = document.getElementById("usernameInput").value;
+        let pwd = document.getElementById("passwordInput").value;
+        let usersArr = JSON.parse(localStorage.getItem("users"));
+        if (usersArr == null) {
+          alert("no user is registered.first sign up");
           return;
         }
+        let parsedArr = usersArr.map(item => JSON.parse(item));
+        for (let item of parsedArr) {
+          console.log("item is:" + item.userName + " pwd:" + item.pwd);
+          if (item.userName == userName && item.pwd == pwd) {
+            console.log("user was found");
+            item.lastLogged = new Date();
+            let storageArr = parsedArr.map(item => JSON.stringify(item));
+            localStorage.setItem("users", JSON.stringify(storageArr));
+            localStorage.setItem("currentUser", JSON.stringify(userName));
+            if (item.isAdmin == false) { window.location.href = "./index.html"; }
+            else { window.location.href = "./adminCrm.html"; }
+            return;
+          }
+        }
+        console.error("username and password are incorrect. no such user");
+        alert("no such user");
+      } catch (err) {
+        console.log(err);
+        alert("an error occured");
+        return;
       }
-      console.error("username and password are incorrect. no such user");
-      alert("no such user");
+
     })
   </script>
 </body>

@@ -147,10 +147,13 @@
                 for (let obj of objArr) {
                     if (obj.userName == userObj.userName) {
                         console.error("user " + obj.userName + " already exists");
+                        alert("user " + obj.userName + " already exists");
                         return;
                     }
                     if (obj.email == userObj.email) {
-                        console.error("user" + obj.email + " already exists");
+                        console.error("user " + obj.email + " already exists");
+                        alert("user " + obj.email + " already exists");
+                        return;
                     }
                 }
                 storageArr.push(JSON.stringify(userObj));
